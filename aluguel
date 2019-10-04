@@ -1,0 +1,44 @@
+pragma solidity 0.5.12;
+
+contract Aluguel {
+
+
+/* iniciar um comentário com esses caracteres
+e fecho com o asterisco e barra
+*/ 
+
+// se for so um comentario barra/barra
+
+    string public locatario;
+
+    string public locador;
+    
+// string é nome
+    uint256 private aluguel;
+// definir sempre o nome da uint que é função valor
+
+    uint256 constant numeroMaximoLegalDeAlugueisParaMulta = 3;
+
+/* string = texto
+    uint = numero inteiro
+*/
+    constructor(
+        string memory nomeLocador,
+        string memory nomeLocatario,
+        uint256 valorDoAluguel)
+    public {
+        locador = nomeLocador;
+        locatario = nomeLocatario;
+        aluguel = valorDoAluguel;
+    }
+    function valorAtualDoAluguel() public view returns (uint256) {
+        return aluguel;
+    }
+    function simulaMlta (uint256 mesesRestantes,
+                    uint256 totalMesesContrato)
+    public
+    view
+    returns(uint256 valorMulta) {
+
+    }
+}
