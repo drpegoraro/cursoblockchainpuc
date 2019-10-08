@@ -1,7 +1,5 @@
-pragma solidity 0.5.12;
-
-contract Aluguel {
-
+contract Aluguel 
+{
 
 /* iniciar um comentário com esses caracteres
 e fecho com o asterisco e barra
@@ -26,19 +24,31 @@ e fecho com o asterisco e barra
         string memory nomeLocador,
         string memory nomeLocatario,
         uint256 valorDoAluguel)
-    public {
+    public 
+    {
         locador = nomeLocador;
         locatario = nomeLocatario;
         aluguel = valorDoAluguel;
     }
-    function valorAtualDoAluguel() public view returns (uint256) {
+    function valorAtualDoAluguel() public view returns (uint256) 
+    {
         return aluguel;
     }
-    function simulaMlta (uint256 mesesRestantes,
+    function simulaMulta (uint256 mesesRestantes,
                     uint256 totalMesesContrato)
     public
     view
-    returns(uint256 valorMulta) {
-
+    returns(uint256 valorMulta) 
+    {
+        valorMulta = aluguel*numeroMaximoLegalDeAlugueisParaMulta;
+        valorMulta = valorMulta/totalMesesContrato;
+        valorMulta = valorMulta*mesesRestantes;
+        return valorMulta;
+    }
+    function reajusteAluguel (uint256 percentualReajuste) public
+    {
+        uint256 valorDoAcrescimo = 0;
+        valorDoAcrescimo = ((aluguel*percentualReajuste)/100);
+        aluguel = aluguel + valorDoAcrescimo;
     }
 }
