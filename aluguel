@@ -1,3 +1,5 @@
+pragma solidity 0.5.12;
+
 contract Aluguel 
 {
 
@@ -47,8 +49,23 @@ e fecho com o asterisco e barra
     }
     function reajusteAluguel (uint256 percentualReajuste) public
     {
+        if (percentualReajuste >20)
+        {
+            percentualReajuste = 20;
+        }
         uint256 valorDoAcrescimo = 0;
         valorDoAcrescimo = ((aluguel*percentualReajuste)/100);
         aluguel = aluguel + valorDoAcrescimo;
     }
-}
+    function aditamentoValorAluguel(uint256 valorCerto) public
+    {
+        aluguel = valorCerto;
+    }
+    function aplicaMulta (uint256 mesesRestantes, uint256 percentual) public
+    {
+        require(mesesRestantes<30, "Período de contrato inválido");
+        for (uint i=1; i<mesesRestantes; i++){
+            aluguel = aluguel+((aluguel*percentual)/100);
+        }
+        }
+    }
