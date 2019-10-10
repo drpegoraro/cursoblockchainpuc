@@ -4,7 +4,7 @@
 {
     string public prestador;
     string public empresa;
-    uint256 private  valor;
+    uint256 public valor;
     uint256 public horas;
 
     constructor (
