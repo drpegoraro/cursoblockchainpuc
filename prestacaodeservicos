@@ -1,10 +1,9 @@
-    pragma solidity 0.5.12;
-
+   
     contract prestacaoDeServicos
 {
     string public prestador;
     string public empresa;
-    uint256 public valor;
+    uint256 private  valor;
     uint256 public horas;
 
     constructor (
@@ -18,18 +17,15 @@
         valor = valorHoraTrabalho;
         horas = horasTrabalhadas;
     }
-    function calculoRemuneracao (uint256 valor, uint256 horas) public view returns (uint256 remuneracaoFinal)
+    function calculoRemuneracao (uint256 valor, uint256 horas) public view returns(uint256 remuneracaoFinal)
     {
         remuneracaoFinal = valor*horas;
         return remuneracaoFinal;
     }
-    
-   /*view RemuneracaoFinal
-
-    require  Horastrabalhadas = 220;
-
-    if Horastrabalhadas>220 = "Horas inválidas";
-
-    for
-    */
+    function limiteHoras (uint256 horas) public
+    {
+        require(horas>200, "Limite de Horas Ultrapassadas");
+    }
+        for (uint i=1; i>horas; i++)
+        }
 }
