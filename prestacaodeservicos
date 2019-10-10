@@ -1,10 +1,10 @@
-   pragma solidity 0.5.12;
+ pragma solidity 0.5.12;
    
     contract prestacaoDeServicos
 {
     string public prestador;
     string public empresa;
-    uint256 public valor;
+    uint256 public  valor;
     uint256 public horas;
 
     constructor (
@@ -26,7 +26,13 @@
     function limiteHoras (uint256 horas) public
     {
         require(horas>200, "Limite de Horas Ultrapassadas");
+       
     }
-        for (uint i=1; i>horas; i++)
+    function valorMaximo (uint256 valor) public
+    {
+        if (valor>300)
+        {
+            valor = 300;
         }
+    }
 }
