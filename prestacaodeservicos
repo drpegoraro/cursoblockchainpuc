@@ -1,38 +1,49 @@
- pragma solidity 0.5.12;
+pragma solidity 0.5.12;
    
-    contract prestacaoDeServicos
+    contract PrestacaoDeServicos
 {
     string public prestador;
     string public empresa;
-    uint256 public  valor;
-    uint256 public horas;
+    uint256 public  valorHoraTrabalho;
+    uint256 public horasTrabalhadas;
 
     constructor (
         string memory nomePrestador,
         string memory nomeEmpresa,
         uint256 valorHoraTrabalho,
         uint256 horasTrabalhadas) public
-    {
+        
+        {
+        require (valorHoraTrabalho<200);
+        
         prestador = nomePrestador;
         empresa = nomeEmpresa;
-        valor = valorHoraTrabalho;
-        horas = horasTrabalhadas;
-    }
-    function calculoRemuneracao (uint256 valor, uint256 horas) public view returns(uint256 remuneracaoFinal)
+        valorHoraTrabalho = valorHoraTrabalho;
+        horasTrabalhadas = horasTrabalhadas;
+        }
+    
+    function remuneracaofinal () public view returns (uint256 remuneracaoFinal)
     {
-        remuneracaoFinal = valor*horas;
+        remuneracaoFinal = valorHoraTrabalho * horasTrabalhadas;
         return remuneracaoFinal;
     }
-    function limiteHoras (uint256 horas) public
+    
+    function valorMaximoHora () public
     {
-        require(horas>200, "Limite de Horas Ultrapassadas");
-       
-    }
-    function valorMaximo (uint256 valor) public
-    {
-        if (valor>300)
+        if (valorHoraTrabalho>300)
+        {    
+            valorHoraTrabalho = 300;
+        }
+        else
         {
-            valor = 300;
+        valorHoraTrabalho = valorHoraTrabalho;
         }
     }
+    
+    function duracaoDoContrato (uint256 duracaoDoContrato) public
+    {
+        for (uint i=1; duracaoDoContrato<12; i++) {
+            duracaoDoContrato<12;
+        }
+    }    
 }
