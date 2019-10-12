@@ -14,8 +14,10 @@ pragma solidity 0.5.12;
         uint256 numeroHorasTrabalhadas) public
         
         {
-        require (valorHoraTrabalho<300);
-        require (numeroHorasTrabalhadas<220);
+// require para que o contrato seja limitado a no m´áximo 66.000 ether
+        
+        require (valorHoraTrabalho<=300, "O VALOR DA HORA ULTRAPASSOU O LIMITE");
+        require (numeroHorasTrabalhadas<=220, "O NÚMERO DE HORAS ULTRAPASSOU O LIMITE");
         
         prestador = nomePrestador;
         empresa = nomeEmpresa;
@@ -26,18 +28,14 @@ pragma solidity 0.5.12;
     function remuneracaoFinal () public view returns (uint256 remuneracaoFinal)
     {
         remuneracaoFinal = valorHora*horasTrabalhadas;
-        return remuneracaoFinal;
-    }
-    
-    function valorMaximoHora () public
-    {
-        if (valorHora>300)
+        
+/*condiç~ão para a ter uma remuneraç~ão m´ínima de 1.000 ether
+            *Gostaria que aparecesse a mensagem que foi aplicada essa condiç~ão
+*/
+        
+        if (remuneracaoFinal<1000)
         {    
-            valorHora = 300;
-        }
-        else
-        {
-        valorHora = valorHora;
+            remuneracaoFinal = 1000;
         }
     }
     
