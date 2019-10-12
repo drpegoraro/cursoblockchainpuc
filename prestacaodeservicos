@@ -4,39 +4,40 @@ pragma solidity 0.5.12;
 {
     string public prestador;
     string public empresa;
-    uint256 public  valorHoraTrabalho;
+    uint256 public  valorHora;
     uint256 public horasTrabalhadas;
 
     constructor (
         string memory nomePrestador,
         string memory nomeEmpresa,
         uint256 valorHoraTrabalho,
-        uint256 horasTrabalhadas) public
+        uint256 numeroHorasTrabalhadas) public
         
         {
-        require (valorHoraTrabalho<200);
+        require (valorHoraTrabalho<300);
+        require (numeroHorasTrabalhadas<220);
         
         prestador = nomePrestador;
         empresa = nomeEmpresa;
-        valorHoraTrabalho = valorHoraTrabalho;
-        horasTrabalhadas = horasTrabalhadas;
+        valorHora = valorHoraTrabalho;
+        horasTrabalhadas = numeroHorasTrabalhadas;
         }
     
-    function remuneracaofinal () public view returns (uint256 remuneracaoFinal)
+    function remuneracaoFinal () public view returns (uint256 remuneracaoFinal)
     {
-        remuneracaoFinal = valorHoraTrabalho * horasTrabalhadas;
+        remuneracaoFinal = valorHora*horasTrabalhadas;
         return remuneracaoFinal;
     }
     
     function valorMaximoHora () public
     {
-        if (valorHoraTrabalho>300)
+        if (valorHora>300)
         {    
-            valorHoraTrabalho = 300;
+            valorHora = 300;
         }
         else
         {
-        valorHoraTrabalho = valorHoraTrabalho;
+        valorHora = valorHora;
         }
     }
     
