@@ -6,12 +6,15 @@ pragma solidity 0.5.12;
     string public empresa;
     uint256 public  valorHora;
     uint256 public horasTrabalhadas;
+    bool[] public statusPagamento;
+    address payable public contaprestador;
 
     constructor (
         string memory nomePrestador,
         string memory nomeEmpresa,
         uint256 valorHoraTrabalho,
-        uint256 numeroHorasTrabalhadas) public
+        uint256 numeroHorasTrabalhadas,
+        address payable ncontaprestador) public
         
         {
 // require para que o contrato seja limitado a no m´áximo 66.000 ether
@@ -23,6 +26,7 @@ pragma solidity 0.5.12;
         empresa = nomeEmpresa;
         valorHora = valorHoraTrabalho;
         horasTrabalhadas = numeroHorasTrabalhadas;
+        contaprestador = ncontaprestador;
         }
     
     function remuneracaoFinal () public view returns (uint256 remuneracaoFinal)
@@ -32,17 +36,24 @@ pragma solidity 0.5.12;
 /*condiç~ão para a ter uma remuneraç~ão m´ínima de 1.000 ether
             *Gostaria que aparecesse a mensagem que foi aplicada essa condiç~ão
 */
-        
         if (remuneracaoFinal<1000)
         {    
             remuneracaoFinal = 1000;
         }
-    }
-    
-    function duracaoDoContrato (uint256 duracaoDoContrato) public
-    {
-        for (uint i=1; duracaoDoContrato<12; i++) {
-            duracaoDoContrato<12;
+
         }
-    }    
+
+//contrato tem duração de 12 meses
+    function numeroParcela (uint256 numeroParcela) public
+    {
+        require (numeroParcela<12, "O CONTRATO EXPIROU. DURAÇÃO DE 12 MESES");
+        for (uint i=1; numeroParcela<12; i++) {
+            numeroParcela = numeroParcela + 1;
+        }
+    }  
+    function efetuarPagamento() public payable 
+    {
+        contaprestador.transfer(msg.value);
+        statusPagamento.push(true);
+    }
 }
