@@ -7,14 +7,31 @@ pragma solidity 0.5.12;
     uint256 public  valorHora;
     uint256 public horasTrabalhadas;
     bool[] public statusPagamento;
-    address payable public contaprestador;
-
+    address public contaPrestador;
+    address payable public contaEmpresa;
+    bool public remuneracaoPaga;
+    bool public remuneracaoRecebida;
+    
+    event pagamentoRealizado (uint valor);
+    
+   /* modifier autorizadoRecebimento () {
+        require (msg.sender == prestador, "SOMENTE O PRESTADOR DE SERVIÇOS PODE RECEBER");
+        _;    
+    }
+    
+    modifier autorizadoPagamento () {
+        require (msg.sender == empresa, "SOMENTE A EMPRESA PODE PAGAR");
+        _;
+    }
+*/
     constructor (
         string memory nomePrestador,
         string memory nomeEmpresa,
         uint256 valorHoraTrabalho,
         uint256 numeroHorasTrabalhadas,
-        address payable ncontaprestador) public
+        address ncontaprestador,
+        address payable ncontaempresa
+        ) public
         
         {
 // require para que o contrato seja limitado a no m´áximo 66.000 ether
@@ -26,23 +43,23 @@ pragma solidity 0.5.12;
         empresa = nomeEmpresa;
         valorHora = valorHoraTrabalho;
         horasTrabalhadas = numeroHorasTrabalhadas;
-        contaprestador = ncontaprestador;
+        contaPrestador = ncontaprestador;
+        contaEmpresa = ncontaempresa;
         }
     
-    function calculoremuneracaoFinal () public view returns (uint256, string memory)
+    function calculoremuneracaoFinal () public view returns (uint256 remuneracaoFinal)
     {
-        uint remuneracaoFinal = valorHora*horasTrabalhadas;
+        remuneracaoFinal = valorHora*horasTrabalhadas;
+
         
 //condiç~ão para a ter uma remuneraç~ão m´ínima de 1.000 ether
 
         if (remuneracaoFinal<1000)
         {    
             remuneracaoFinal = 1000;
-            string memory mensagem = "A REMUNERAÇÃO MÍNIMA FOI APLICADA";
-            return (remuneracaoFinal, mensagem);
+            return remuneracaoFinal;
         }
-
-    }
+     }
 
 //contrato tem duração de 12 meses
     function calculonumeroParcela () public pure returns (uint256 numeroParcela)
@@ -51,10 +68,19 @@ pragma solidity 0.5.12;
         for (uint i=1; numeroParcela<12; i++) {
             numeroParcela = numeroParcela + 1;
         }
-    }  
-    function efetuarPagamento() public payable 
+    } 
+    
+    function efetuarPagamento() public payable
     {
-        contaprestador.transfer(msg.value);
+        require (msg.value == remuneracaoFinal);
+        contaEmpresa.transfer(msg.value);
         statusPagamento.push(true);
+        emit pagamentoRealizado (msg.value);
+    }
+    
+    function receberPagamento () public
+    {
+        contaPrestador.transfer (msg.value);
+        emit pagamentoRecebido (msg.value);
     }
 }
