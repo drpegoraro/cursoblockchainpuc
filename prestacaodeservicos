@@ -29,19 +29,20 @@ pragma solidity 0.5.12;
         contaprestador = ncontaprestador;
         }
     
-    function calculoremuneracaoFinal () public view returns (uint256 remuneracaoFinal)
+    function calculoremuneracaoFinal () public view returns (uint256, string memory)
     {
-        remuneracaoFinal = valorHora*horasTrabalhadas;
+        uint remuneracaoFinal = valorHora*horasTrabalhadas;
         
-/*condiç~ão para a ter uma remuneraç~ão m´ínima de 1.000 ether
-            *Gostaria que aparecesse a mensagem que foi aplicada essa condiç~ão
-*/
+//condiç~ão para a ter uma remuneraç~ão m´ínima de 1.000 ether
+
         if (remuneracaoFinal<1000)
         {    
             remuneracaoFinal = 1000;
+            string memory mensagem = "A REMUNERAÇÃO MÍNIMA FOI APLICADA";
+            return (remuneracaoFinal, mensagem);
         }
 
-        }
+    }
 
 //contrato tem duração de 12 meses
     function calculonumeroParcela () public pure returns (uint256 numeroParcela)
