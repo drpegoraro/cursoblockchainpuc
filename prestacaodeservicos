@@ -29,7 +29,7 @@ pragma solidity 0.5.12;
         contaprestador = ncontaprestador;
         }
     
-    function remuneracaoFinal () public view returns (uint256 remuneracaoFinal)
+    function calculoremuneracaoFinal () public view returns (uint256 remuneracaoFinal)
     {
         remuneracaoFinal = valorHora*horasTrabalhadas;
         
@@ -44,7 +44,7 @@ pragma solidity 0.5.12;
         }
 
 //contrato tem duração de 12 meses
-    function numeroParcela (uint256 numeroParcela) public
+    function calculonumeroParcela () public pure returns (uint256 numeroParcela)
     {
         require (numeroParcela<12, "O CONTRATO EXPIROU. DURAÇÃO DE 12 MESES");
         for (uint i=1; numeroParcela<12; i++) {
