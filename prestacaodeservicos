@@ -8,9 +8,9 @@ pragma solidity 0.5.12;
     uint256 public horasTrabalhadas;
     bool[] public statusPagamento;
     address public contaPrestador;
-    address payable public contaEmpresa;
-    bool public remuneracaoPaga;
-    bool public remuneracaoRecebida;
+    address payable contaEmpresa;
+    bool public pago;
+    bool public retirado;
     
     event pagamentoRealizado (uint valor);
     
@@ -70,17 +70,19 @@ pragma solidity 0.5.12;
         }
     } 
     
+        function saldoNoContrato () public view returns (uint) 
+    {
+        return address(this).balance;
+    }
+
     function efetuarPagamento() public payable
     {
-        require (msg.value == remuneracaoFinal);
-        contaEmpresa.transfer(msg.value);
+        require (msg.sender == contaEmpresa, "SOMENTE EMPRESA PODE PAGAR");
+        
+        // preciso informar que o valor a ser transferido é a remuneracaoFinal. Como faço?
+        
+        contaEmpresa.transfer (address (this).balance);
         statusPagamento.push(true);
         emit pagamentoRealizado (msg.value);
-    }
-    
-    function receberPagamento () public
-    {
-        contaPrestador.transfer (msg.value);
-        emit pagamentoRecebido (msg.value);
     }
 }
