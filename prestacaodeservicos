@@ -51,7 +51,6 @@ pragma solidity 0.5.12;
     {
         remuneracaoFinal = valorHora*horasTrabalhadas;
 
-        
 //condiç~ão para a ter uma remuneraç~ão m´ínima de 1.000 ether
 
         if (remuneracaoFinal<1000)
@@ -81,7 +80,7 @@ pragma solidity 0.5.12;
         
         // preciso informar que o valor a ser transferido é a remuneracaoFinal. Como faço?
         
-        contaEmpresa.transfer (address (this).balance);
+        contaEmpresa.transfer (calculoremuneracaoFinal ());
         statusPagamento.push(true);
         emit pagamentoRealizado (msg.value);
     }
