@@ -1,14 +1,14 @@
 pragma solidity 0.5.12;
    
-    contract PrestacaoDeServicos
+contract PrestacaoDeServicos
 {
     string public prestador;
     string public empresa;
     uint256 public  valorHora;
     uint256 public horasTrabalhadas;
     bool[] public statusPagamento;
-    address public contaPrestador;
-    address payable contaEmpresa;
+    address payable contaPrestador;
+    address contaEmpresa;
     bool public pago;
     bool public retirado;
     
@@ -29,8 +29,8 @@ pragma solidity 0.5.12;
         string memory nomeEmpresa,
         uint256 valorHoraTrabalho,
         uint256 numeroHorasTrabalhadas,
-        address ncontaprestador,
-        address payable ncontaempresa
+        address payable ncontaprestador,
+        address ncontaempresa
         ) public
         
         {
@@ -47,7 +47,7 @@ pragma solidity 0.5.12;
         contaEmpresa = ncontaempresa;
         }
     
-    function calculoremuneracaoFinal () public view returns (uint256 remuneracaoFinal)
+    function calculoremuneracaoFinal () public view returns (uint remuneracaoFinal)
     {
         remuneracaoFinal = valorHora*horasTrabalhadas;
 
@@ -80,8 +80,8 @@ pragma solidity 0.5.12;
         
         // preciso informar que o valor a ser transferido é a remuneracaoFinal. Como faço?
         
-        contaEmpresa.transfer (calculoremuneracaoFinal ());
+        contaPrestador.transfer(address(this).balance);
         statusPagamento.push(true);
-        emit pagamentoRealizado (msg.value);
+        emit pagamentoRealizado(msg.value);
     }
 }
