@@ -60,13 +60,11 @@ contract PrestacaoDeServicos
         }
      }
 
-//contrato tem duração de 12 meses
-    function calculonumeroParcela () public pure returns (uint256 numeroParcela)
+//data vencimento mensal a cada 30 dias (queria todo o dia 10, mas n~ão consegui)
+    function dataVencimentoMensal () public pure returns (uint dataPagamentoMensal)
     {
-        require (numeroParcela<12, "O CONTRATO EXPIROU. DURAÇÃO DE 12 MESES");
-        for (uint i=1; numeroParcela<12; i++) {
-            numeroParcela = numeroParcela + 1;
-        }
+        dataPagamentoMensal = 30 days; 
+        for (uint i=1; dataPagamentoMensal<30; i++) {}
     } 
     
         function saldoNoContrato () public view returns (uint) 
