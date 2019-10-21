@@ -59,15 +59,25 @@ contract PrestacaoDeServicos
             return remuneracaoFinal;
         }
      }
-
-//data vencimento mensal a cada 30 dias (queria todo o dia 10, mas n~ão consegui)
-    function dataVencimentoMensal () public pure returns (uint dataPagamentoMensal)
+// a duração do contrato é de 365 dias
+        // dúvida: cada vez que abrir o contrato ele entende o "now" como a data da 1a. abertura ou o tempo agora?
+        
+    function vigenciaContrato () public view returns (uint dataInicioContrato, uint dataFinalContrato)
     {
-        dataPagamentoMensal = 30 days; 
-        for (uint i=1; dataPagamentoMensal<30; i++) {}
+        dataInicioContrato = now;
+        dataFinalContrato = dataInicioContrato+365 days;
+    }
+//data vencimento mensal a cada 30 dias (queria todo o dia 10, mas n~ão consegui)
+    function dataVencimentoMensal () public returns (uint segundoAoDia, uint dataVencimentoMensal)
+    {
+        segundoAoDia=86400;
+        dataVencimentoMensal=30*segundoAoDia;
+        for (uint i=1; i<12; i++)  
+        {}
+        
     } 
     
-        function saldoNoContrato () public view returns (uint) 
+    function saldoNoContrato () public view returns (uint) 
     {
         return address(this).balance;
     }
