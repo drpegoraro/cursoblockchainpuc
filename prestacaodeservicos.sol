@@ -14,16 +14,6 @@ contract PrestacaoDeServicos
     
     event pagamentoRealizado (uint valor);
     
-   /* modifier autorizadoRecebimento () {
-        require (msg.sender == prestador, "SOMENTE O PRESTADOR DE SERVIÇOS PODE RECEBER");
-        _;    
-    }
-    
-    modifier autorizadoPagamento () {
-        require (msg.sender == empresa, "SOMENTE A EMPRESA PODE PAGAR");
-        _;
-    }
-*/
     constructor (
         string memory nomePrestador,
         string memory nomeEmpresa,
@@ -60,34 +50,30 @@ contract PrestacaoDeServicos
         }
      }
 // a duração do contrato é de 365 dias
-        // dúvida: cada vez que abrir o contrato ele entende o "now" como a data da 1a. abertura ou o tempo agora?
         
     function vigenciaContrato () public view returns (uint dataInicioContrato, uint dataFinalContrato)
     {
         dataInicioContrato = now;
-        dataFinalContrato = dataInicioContrato+365 days;
+        dataFinalContrato = dataInicioContrato+365 days; 
     }
-//data vencimento mensal a cada 30 dias (queria todo o dia 10, mas n~ão consegui)
-    function dataVencimentoMensal () public returns (uint segundoAoDia, uint dataVencimentoMensal)
+//data vencimento mensal a cada 30 dias (queria todo o dia 10, mas n~ão consegui). Tentei então a cada 30 dias, mas também não consegui
+    function dataVencimentoMensal () public view returns (uint dataVencimentoMensal, uint dataInicioContrato)
     {
-        segundoAoDia=86400;
-        dataVencimentoMensal=30*segundoAoDia;
-        for (uint i=1; i<12; i++)  
-        {}
-        
+        dataVencimentoMensal=dataInicioContrato+30 days;
+        for (uint i=1; i>30; i++)
+        dataVencimentoMensal=dataVencimentoMensal+30;
     } 
-    
+            
     function saldoNoContrato () public view returns (uint) 
     {
         return address(this).balance;
     }
 
+//DÚVIDA: o pagamento está sendo efetuado no contrato, como o prestador retira? Estou conseguindo pagar, mas fica no contrato e não aparece na conta do prestador.
+
     function efetuarPagamento() public payable
     {
         require (msg.sender == contaEmpresa, "SOMENTE EMPRESA PODE PAGAR");
-        
-        // preciso informar que o valor a ser transferido é a remuneracaoFinal. Como faço?
-        
         contaPrestador.transfer(address(this).balance);
         statusPagamento.push(true);
         emit pagamentoRealizado(msg.value);
