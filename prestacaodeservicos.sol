@@ -54,22 +54,38 @@ contract PrestacaoDeServicos
     function vigenciaContrato () public view returns (uint dataInicioContrato, uint dataFinalContrato)
     {
         dataInicioContrato = now;
-        dataFinalContrato = dataInicioContrato+365 days; 
+        dataFinalContrato = dataInicioContrato+365 days;
     }
-//data vencimento mensal a cada 30 dias (queria todo o dia 10, mas n~ão consegui). Tentei então a cada 30 dias, mas também não consegui
-    function dataVencimentoMensal () public view returns (uint dataVencimentoMensal, uint dataInicioContrato)
+
+// coloquei que o vencimento é em 1 dia e se não for cumprido, a remuneração é dobrada (queria fracionada)
+// co
+    function vencimento () public view returns (uint dataVencimento)
     {
-        dataVencimentoMensal=dataInicioContrato+30 days;
-        for (uint i=1; i>30; i++)
-        dataVencimentoMensal=dataVencimentoMensal+30;
+       dataVencimento = now+864000;
+       return dataVencimento;
+        
     } 
-            
-    function saldoNoContrato () public view returns (uint) 
+    
+    function pagamentoNoPrazo (uint dataVencimento, uint remuneracaoFinal) public payable
+     {
+        require (now <= dataVencimento, "PAGAMENTO NO PRAZO");
+        require (msg.value == remuneracaoFinal, "PAGAMENTO SEM MULTA");
+        pago = true;
+        emit pagamentoRealizado(msg.value);
+    }
+    
+    function pagamentoEmMora(uint remuneracaoFinal, uint dataVencimento) public payable
+    {
+        require (now > dataVencimento, "PAGAMENTO EM ATRASO");
+        require (msg.value == remuneracaoFinal*2, "PAGAMENTO COM MULTA");
+        pago = true;
+        emit pagamentoRealizado(msg.value);
+    }
+    
+    function saldoNoContrato () public view returns (uint)
     {
         return address(this).balance;
     }
-
-//DÚVIDA: o pagamento está sendo efetuado no contrato, como o prestador retira? Estou conseguindo pagar, mas fica no contrato e não aparece na conta do prestador.
 
     function efetuarPagamento() public payable
     {
