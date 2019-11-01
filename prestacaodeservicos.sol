@@ -24,7 +24,7 @@ contract PrestacaoDeServicos
         ) public
         
         {
-// require para que o contrato seja limitado a no m´áximo 66.000 ether
+// require para que o contrato seja limitado a no máximo 66.000 wei
         
         require (valorHoraTrabalho<=300, "O VALOR DA HORA ULTRAPASSOU O LIMITE");
         require (numeroHorasTrabalhadas<=220, "O NÚMERO DE HORAS ULTRAPASSOU O LIMITE");
@@ -41,7 +41,7 @@ contract PrestacaoDeServicos
     {
         remuneracaoFinal = valorHora*horasTrabalhadas;
 
-//condiç~ão para a ter uma remuneraç~ão m´ínima de 1.000 ether
+//condição para a ter uma remuneração mínima de 1.000 wei
 
         if (remuneracaoFinal<1000)
         {    
@@ -57,41 +57,37 @@ contract PrestacaoDeServicos
         dataFinalContrato = dataInicioContrato+365 days;
     }
 
-// coloquei que o vencimento é em 1 dia e se não for cumprido, a remuneração é dobrada (queria fracionada)
-// co
-    function vencimento () public view returns (uint dataVencimento)
+// coloquei que o vencimento são em 10 dias e se não for cumprido
+
+    function dataVencimento () public view returns (uint vencimento)
     {
-       dataVencimento = now+864000;
-       return dataVencimento;
+       vencimento = now+864000;
+       return vencimento;
         
     } 
     
-    function pagamentoNoPrazo (uint dataVencimento, uint remuneracaoFinal) public payable
+    function pagtoNoPrazo (uint vencimento, uint remuneracaoFinal) public payable
      {
-        require (now <= dataVencimento, "PAGAMENTO NO PRAZO");
+        require (now <= vencimento, "PAGAMENTO NO PRAZO");
         require (msg.value == remuneracaoFinal, "PAGAMENTO SEM MULTA");
         pago = true;
+        contaPrestador.transfer(address(this).balance);
+        statusPagamento.push(true);
         emit pagamentoRealizado(msg.value);
     }
-    
-    function pagamentoEmMora(uint remuneracaoFinal, uint dataVencimento) public payable
+ 
+    function pgtoAtrasado (uint vencimento, uint remuneracaoFinal) public payable
     {
-        require (now > dataVencimento, "PAGAMENTO EM ATRASO");
-        require (msg.value == remuneracaoFinal*2, "PAGAMENTO COM MULTA");
+        require (now > vencimento, "PAGAMENTO EM ATRASO");
+        require (msg.value == remuneracaoFinal+(remuneracaoFinal*20/100), "PAGAMENTO COM MULTA");
         pago = true;
+        contaPrestador.transfer(address(this).balance);
+        statusPagamento.push(true);
         emit pagamentoRealizado(msg.value);
     }
     
     function saldoNoContrato () public view returns (uint)
     {
         return address(this).balance;
-    }
-
-    function efetuarPagamento() public payable
-    {
-        require (msg.sender == contaEmpresa, "SOMENTE EMPRESA PODE PAGAR");
-        contaPrestador.transfer(address(this).balance);
-        statusPagamento.push(true);
-        emit pagamentoRealizado(msg.value);
     }
 }
