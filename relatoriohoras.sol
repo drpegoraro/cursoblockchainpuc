@@ -2,6 +2,21 @@ pragma solidity 0.5.12;
 
 contract RelatorioDeHorasTrabalhadas
 {
+    event apuracaoDoMes (uint valor);
+    string public prestador;
+    uint256 conta;
+    
+    constructor (
+    string memory nomePrestador,
+    uint256 contaPrestador
+    )
+    public
+    
+    {
+        prestador = nomePrestador;
+        contaPrestador = conta;
+    }
+    
     struct RelatorioDeHoras {
         uint256 mes;
         uint256 ano;
@@ -32,5 +47,6 @@ contract RelatorioDeHorasTrabalhadas
             apuracaoDoMes = relatos[i].totalHorasTrabalhadas+apuracaoDoMes;
         }
         return apuracaoDoMes;
+        emit apuracaoDoMes;
     }
 }
