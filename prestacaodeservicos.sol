@@ -28,6 +28,7 @@ contract PrestacaoDeServicos
         
         require (valorHoraTrabalho<=300, "O VALOR DA HORA ULTRAPASSOU O LIMITE");
         require (numeroHorasTrabalhadas<=220, "O NÚMERO DE HORAS ULTRAPASSOU O LIMITE");
+        require (msg.sender == ncontaempresa, "Operação exclusiva da empresa");
         
         prestador = nomePrestador;
         empresa = nomeEmpresa;
