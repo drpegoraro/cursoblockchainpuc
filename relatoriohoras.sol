@@ -6,15 +6,16 @@ contract RelatorioDeHorasTrabalhadas
     string public prestador;
     uint256 conta;
     
+    
     constructor (
     string memory nomePrestador,
-    uint256 contaPrestador
+    address payable contaPrestador
     )
     public
     
     {
         prestador = nomePrestador;
-        contaPrestador = conta;
+        require (msg.sender == contaPrestador, "Operação exclusiva do prestador");
     }
     
     struct RelatorioDeHoras {
