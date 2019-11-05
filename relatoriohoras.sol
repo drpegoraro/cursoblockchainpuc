@@ -2,7 +2,7 @@ pragma solidity 0.5.12;
 
 contract RelatorioDeHorasTrabalhadas
 {
-    event apuracaoDoMes (uint valor);
+    event relatorioEmitido (uint256);
     string public prestador;
     uint256 conta;
     
@@ -40,13 +40,14 @@ contract RelatorioDeHorasTrabalhadas
         relatos.push(relato);
     }
         
-    function calculaApuracao() public view returns (uint256 apuracaoDoMes)
+    function gerarRelatorio() public returns (uint256)
     {
+        uint256 apuracaoDoMes;
         for (uint i=0; i<relatos.length; i++)   
         {
             apuracaoDoMes = relatos[i].totalHorasTrabalhadas+apuracaoDoMes;
         }
-        return apuracaoDoMes;
-        emit apuracaoDoMes;
+        emit relatorioEmitido (apuracaoDoMes);
+        return (apuracaoDoMes);
     }
 }
